@@ -2,6 +2,7 @@
 This is the 2048 Game!
 
 Note: + The game uses Python 3.11.8 64-bit so have this version to open the files and play
+
       + Please open the Menu.py to play!
 
 There are 3 levels you can choose:
