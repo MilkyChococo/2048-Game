@@ -4,6 +4,7 @@ There are 3 levels you can choose:
   + 4x4
   + 6x6
   + 8x8
+
 Blocks spawn: [2], [4]
 How to play:
   + You can move 'Up', 'Down', 'Left'and 'Right' by pressing the corresponding button.
