@@ -3,7 +3,7 @@ This is the 2048 Game!
 
 Note: 
 
-      + The game uses Python 3.11.8 64-bit so have this version to open the files and play
+      + The game uses Python 3.11.8 64-bit so you should have this version to open the files and play
 
       + Please open the Menu.py to play!
 
@@ -18,10 +18,10 @@ Blocks spawn: [2], [4]
 How to play:
 
         + You can move 'Up', 'Down', 'Left'and 'Right' by pressing the corresponding button.
-        + For each move, the blocks automatically shift to the edge and automatically merge if they overlap
-        + When combining 2 blocks with the same number, it will form 1 block with twice the number of 2 previous blocks
+        + For each move, the blocks automatically shift to the edge and automatically merge if they overlap.
+        + When combining 2 blocks with the same number, it will form 1 block with twice the number of 2 previous blocks.
         + The score will increase with the combined 2-block number.
-        + You have 2 chances to return to the previous state by pressing the 'Reset' button on the screen
+        + You have 2 chances to return to the previous state by pressing the 'Reset' button on the screen.
         + When you lose (the board is full), please enter to play again or press 'X' on the right corner to close the game.
 
 Have Fun!!!!
