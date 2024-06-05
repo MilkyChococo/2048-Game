@@ -12,5 +12,6 @@ How to play:
   + The score will increase with the combined 2-block number.
   + You have 2 chances to return to the previous state by pressing the 'Reset' button on the screen
   + When you lose (the board is full), please enter to play again or press 'X' on the right corner to close the game.
+
 Have Fun!!!!
 
