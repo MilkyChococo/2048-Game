@@ -6,7 +6,9 @@ There are 3 levels you can choose:
   + 8x8
 
 Blocks spawn: [2], [4]
+
 How to play:
+
   + You can move 'Up', 'Down', 'Left'and 'Right' by pressing the corresponding button.
   + For each move, the blocks automatically shift to the edge and automatically merge if they overlap
   + When combining 2 blocks with the same number, it will form 1 block with twice the number of 2 previous blocks
