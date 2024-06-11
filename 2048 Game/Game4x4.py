@@ -1,7 +1,6 @@
 import pygame
 import random
 import copy
-#Khởi tạo Game2048
 class Game2048:
     def __init__(self):
         #Chạy Pygame và Nhạc trong Pygame
@@ -24,8 +23,8 @@ class Game2048:
         #Tải hiệu ứng khi 2 ô gộp lại với nhau  
         self.ting=pygame.mixer.Sound("ting.mp3")
         #Tạo chiều dài và rộng cho trò chơi
-        self.WIDTH = 400
-        self.HEIGHT = 500
+        self.WIDTH = 600
+        self.HEIGHT = 700
         #Chạy màn hình với dài rộng ở trên
         self.screen = pygame.display.set_mode([self.WIDTH, self.HEIGHT])
         #Đặt tên cho màn chơi
@@ -49,12 +48,13 @@ class Game2048:
                        512: (237, 200, 80),
                        1024: (237, 197, 63),
                        2048: (237, 194, 46),
+                       4096: (237, 191, 43),
                        'light text': (249, 246, 242),
                        'dark text': (119, 110, 101),
                        'other': (0, 0, 0),
                        'bg': (187, 173, 160)}
         #Khối ô giá trị trong bản
-        self.board_values = [[0 for _ in range(4)] for _ in range(4)]
+        self.board_values = [[0 for _ in range(6)] for _ in range(6)]
         self.game_over = False
         self.spawn_new = True
         self.init_count = 0
@@ -66,19 +66,19 @@ class Game2048:
         self.edge_spawn_blocked = {'UP': False, 'DOWN': False, 'LEFT': False, 'RIGHT': False}
     #Hàm tạo màn hình Game over khi kết thúc trò chơi
     def draw_over(self):
-        pygame.draw.rect(self.screen, 'black', [50, 50, 300, 100], 0, 10)
+        pygame.draw.rect(self.screen, 'black', [140, 180, 325, 100], 0, 10)
         game_over_text1 = self.font.render('Game Over!', True, 'white')
         game_over_text2 = self.font.render('Press Enter to Restart', True, 'white')
-        self.screen.blit(game_over_text1, (130, 65))
-        self.screen.blit(game_over_text2, (70, 105))
+        self.screen.blit(game_over_text1, (235, 200))
+        self.screen.blit(game_over_text2, (175, 240))
     #Các khối ô sẽ di chuyển dựa theo nút ấn UP, DOWN, LEFT, RIGHT
     def take_turn(self, direc, board):
-        merged = [[False for _ in range(4)] for _ in range(4)]
+        merged = [[False for _ in range(6)] for _ in range(6)]
         move_made = False
 
         if direc == 'UP':
-            for i in range(1, 4):
-                for j in range(4):
+            for i in range(1, 6):
+                for j in range(6):
                     if board[i][j] != 0:
                         shift = 0
                         for q in range(i):
@@ -95,32 +95,32 @@ class Game2048:
                             board[i - shift][j] = 0
                             merged[i - shift - 1][j] = True
                             move_made = True
-            self.edge_spawn_blocked['UP'] = any(board[0][j] != 0 for j in range(4))
+            self.edge_spawn_blocked['UP'] = any(board[0][j] != 0 for j in range(6))
 
         elif direc == 'DOWN':
-            for i in range(2, -1, -1):
-                for j in range(4):
+            for i in range(4, -1, -1):
+                for j in range(6):
                     if board[i][j] != 0:
                         shift = 0
-                        for q in range(i + 1, 4):
+                        for q in range(i + 1, 6):
                             if board[q][j] == 0:
                                 shift += 1
                         if shift > 0:
                             board[i + shift][j] = board[i][j]
                             board[i][j] = 0
                             move_made = True
-                        if i + shift < 3 and board[i + shift + 1][j] == board[i + shift][j] and not merged[i + shift][j] and not merged[i + shift + 1][j]:
+                        if i + shift < 5 and board[i + shift + 1][j] == board[i + shift][j] and not merged[i + shift][j] and not merged[i + shift + 1][j]:
                             board[i + shift + 1][j] *= 2
                             self.ting.play()
                             self.score += board[i + shift + 1][j]
                             board[i + shift][j] = 0
                             merged[i + shift + 1][j] = True
                             move_made = True
-            self.edge_spawn_blocked['DOWN'] = any(board[3][j] != 0 for j in range(4))
+            self.edge_spawn_blocked['DOWN'] = any(board[5][j] != 0 for j in range(6))
 
         elif direc == 'LEFT':
-            for j in range(1, 4):
-                for i in range(4):
+            for j in range(1, 6):
+                for i in range(6):
                     if board[i][j] != 0:
                         shift = 0
                         for q in range(j):
@@ -137,27 +137,28 @@ class Game2048:
                             board[i][j - shift] = 0
                             merged[i][j - shift - 1] = True
                             move_made = True
-            self.edge_spawn_blocked['LEFT'] = any(board[i][0] != 0 for i in range(4))
+            self.edge_spawn_blocked['LEFT'] = any(board[i][0] != 0 for i in range(6))
+
         elif direc == 'RIGHT':
-            for j in range(2, -1, -1):
-                for i in range(4):
+            for j in range(4, -1, -1):
+                for i in range(6):
                     if board[i][j] != 0:
                         shift = 0
-                        for q in range(j + 1, 4):
+                        for q in range(j + 1, 6):
                             if board[i][q] == 0:
                                 shift += 1
                         if shift > 0:
                             board[i][j + shift] = board[i][j]
                             board[i][j] = 0
                             move_made = True
-                        if j + shift < 3 and board[i][j + shift + 1] == board[i][j + shift] and not merged[i][j + shift] and not merged[i][j + shift + 1]:
+                        if j + shift < 5 and board[i][j + shift + 1] == board[i][j + shift] and not merged[i][j + shift] and not merged[i][j + shift + 1]:
                             board[i][j + shift + 1] *= 2
                             self.ting.play()
                             self.score += board[i][j + shift + 1]
                             board[i][j + shift] = 0
                             merged[i][j + shift + 1] = True
                             move_made = True
-            self.edge_spawn_blocked['RIGHT'] = any(board[i][3] != 0 for i in range(4))
+            self.edge_spawn_blocked['RIGHT'] = any(board[i][5] != 0 for i in range(6))
 
         return board, move_made
     #Kiểm tra có thể tạo ô mới
@@ -168,8 +169,8 @@ class Game2048:
         count = 0
         full = False
         while any(0 in row for row in board) and count < 1:
-            row = random.randint(0, 3)
-            col = random.randint(0, 3)
+            row = random.randint(0, 5)
+            col = random.randint(0, 5)
             if board[row][col] == 0:
                 count += 1
                 board[row][col] = 4 if random.randint(1, 10) == 10 else 2
@@ -178,18 +179,18 @@ class Game2048:
         return board, full
     #Tạo bảng trò chơi
     def draw_board(self):
-        pygame.draw.rect(self.screen, self.colors['bg'], [0, 0, 400, 400], 0, 10)
+        pygame.draw.rect(self.screen, self.colors['bg'], [0, 0, 600, 600], 0, 10)
         score_text = self.font.render(f'Score: {self.score}', True, 'black')
         high_score_text = self.font.render(f'High Score: {self.high_score}', True, 'black')
-        self.screen.blit(score_text, (10, 410))
-        self.screen.blit(high_score_text, (10, 450))
+        self.screen.blit(score_text, (10, 610))
+        self.screen.blit(high_score_text, (10, 650))
     #Tạo các ô với các màu tương ứng cho giá trị trên ô
     def draw_pieces(self):
-        for i in range(4):
-            for j in range(4):
+        for i in range(6):
+            for j in range(6):
                 value = self.board_values[i][j]
                 value_color = self.colors['light text'] if value > 8 else self.colors['dark text']
-                color = self.colors[value] if value <= 2048 else self.colors['other']
+                color = self.colors[value] if value <= 4096 else self.colors['other']
                 pygame.draw.rect(self.screen, color, [j * 95 + 20, i * 95 + 20, 75, 75], 0, 5)
                 if value > 0:
                     value_len = len(str(value))
@@ -200,26 +201,25 @@ class Game2048:
                     pygame.draw.rect(self.screen, 'black', [j * 95 + 20, i * 95 + 20, 75, 75], 2, 5)
     #Kiểm tra xem Game đã kết thúc chưa
     def check_game_over(self):
+    # Kiểm tra xem có thể thực hiện thêm bước di chuyển nào không
+        for i in range(6):
+            for j in range(6):
+                current_value = self.board_values[i][j]
+                neighbors = []
+                if i > 5:
+                    neighbors.append(self.board_values[i - 1][j])
+                if i < 5:
+                    neighbors.append(self.board_values[i + 1][j])
+                if j > 5:
+                    neighbors.append(self.board_values[i][j - 1])
+                if j < 5:
+                    neighbors.append(self.board_values[i][j + 1])
+                if current_value in neighbors:
+                    return False
         # Kiểm tra xem bảng đã đầy chưa
-            if any(0 in row for row in self.board_values):
-                return False
-    
-            # Kiểm tra xem có thể thực hiện thêm bước di chuyển nào không
-            for i in range(4):
-                for j in range(4):
-                    current_value = self.board_values[i][j]
-                    neighbors = []
-                    if i > 0:
-                        neighbors.append(self.board_values[i - 1][j])
-                    if i < 3:
-                        neighbors.append(self.board_values[i + 1][j])
-                    if j > 0:
-                        neighbors.append(self.board_values[i][j - 1])
-                    if j < 3:
-                        neighbors.append(self.board_values[i][j + 1])
-                    if current_value in neighbors:
-                        return False
-            return True
+        if any(0 in row for row in self.board_values):
+            return False
+        return True
     #Lưu nước đi trước đó
     def save_state(self):
         self.previous_states.append((copy.deepcopy(self.board_values), self.score))
@@ -248,25 +248,25 @@ class Game2048:
                 self.spawn_new = False
                 self.init_count += 1
             if self.direction:
-                self.save_state()  # Lưu trạng thái bảng trước khi di chuyển ô
+                self.save_state()   # Lưu trạng thái bảng trước khi di chuyển ô
                 self.board_values, move_made = self.take_turn(self.direction, self.board_values)
                 if move_made:
                     self.spawn_new = True
-                else:
+                else: 
                     self.block.play()
                     self.previous_states.pop()  # Xóa trạng thái trước khi không di chuyển ô
                 self.direction = None
             if self.game_over:
                 if self.undo_count>0:
-                    pygame.draw.rect(self.screen, 'black', [50, 50, 300, 100], 0, 10)
+                    pygame.draw.rect(self.screen, 'black', [140, 180, 325, 100], 0, 10)
                     second_chance1 = self.font.render('You can return!', True, 'white')
                     second_chance2 = self.font.render('Click Reset Button', True, 'white')
-                    self.screen.blit(second_chance1, (105, 65))
-                    self.screen.blit(second_chance2, (80, 105))
+                    self.screen.blit(second_chance1, (225, 200))
+                    self.screen.blit(second_chance2, (195, 240))
                 else:
                     self.draw_over()
                     if self.score > self.high_score:
-                            self.high_score = self.score
+                        self.high_score = self.score
             else:
                 self.game_over = self.check_game_over()  # Kiểm tra trạng thái game over
             for event in pygame.event.get():
@@ -276,7 +276,7 @@ class Game2048:
                     if event.key == pygame.K_RETURN:
                         if self.game_over:
                             # Khởi động lại trò chơi khi nhấn phím Enter
-                            self.board_values = [[0 for _ in range(4)] for _ in range(4)]
+                            self.board_values = [[0 for _ in range(6)] for _ in range(6)]
                             self.spawn_new = True
                             self.init_count = 0
                             self.score = 0
@@ -284,24 +284,21 @@ class Game2048:
                             self.game_over = False
                     elif event.key == pygame.K_UP:
                         self.direction = 'UP'
-                        
                     elif event.key == pygame.K_DOWN:
                         self.direction = 'DOWN'
-                        
                     elif event.key == pygame.K_LEFT:
                         self.direction = 'LEFT'
-                        
                     elif event.key == pygame.K_RIGHT:
                         self.direction = 'RIGHT'
                 #Ấn nút Reset
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     self.handle_undo_button(event.pos)
                     self.click.play()
+                    self.game_over=self.check_game_over()
             #Tạo hình cho nút Reset
             self.screen.blit(self.reset_pic,(self.WIDTH - 120, self.HEIGHT - 100))
             undo_text = self.font1.render(f"Reset: {self.undo_count} ", True, 'black')
             self.screen.blit(undo_text, (self.WIDTH - 100, self.HEIGHT - 55))
-
             pygame.display.flip()
 
         pygame.quit()
