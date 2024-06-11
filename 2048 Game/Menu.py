@@ -99,7 +99,7 @@ class button8x8:
         if pos[0] in range(self.rect.left, self.rect.right) and pos[1] in range(self.rect.top, self.rect.bottom): self.txt = font.render(self.text, True, "black") 
         else: self.txt = font.render(self.text, True, (238, 228, 218))
 #Tạo hình cho các button
-button_surface = pygame.image.load("4x4.png")
+button_surface = pygame.image.load("button_menu.png")
 button_surface = pygame.transform.scale(button_surface, (150, 50))
 #Tạo các button
 button4x4 = button4x4(button_surface, 250, 250, "Game 4x4")
