@@ -201,10 +201,7 @@ class Game2048:
                     pygame.draw.rect(self.screen, 'black', [j * 85 + 10, i * 85 + 10, 65, 65], 2, 5)
     #Kiểm tra xem Game đã kết thúc chưa
     def check_game_over(self):
-    # Kiểm tra xem bảng đã đầy chưa
-        if any(0 in row for row in self.board_values):
-            return False
-    # Kiểm tra xem có thể thực hiện thêm bước di chuyển nào không
+        # Kiểm tra xem có thể thực hiện thêm bước di chuyển nào không
         for i in range(8):
             for j in range(8):
                 current_value = self.board_values[i][j]
@@ -219,6 +216,9 @@ class Game2048:
                     neighbors.append(self.board_values[i][j + 1])
                 if current_value in neighbors:
                     return False
+        # Kiểm tra xem bảng đã đầy chưa
+        if any(0 in row for row in self.board_values):
+            return False
         return True
     #Lưu nước đi trước đó
     def save_state(self):
@@ -294,6 +294,7 @@ class Game2048:
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     self.handle_undo_button(event.pos)
                     self.click.play()
+                    self.game_over=self.check_game_over()
             #Tạo hình cho nút Reset
             self.screen.blit(self.reset_pic,(self.WIDTH - 120, self.HEIGHT - 100))
             undo_text = self.font1.render(f"Reset: {self.undo_count} ", True, 'black')
