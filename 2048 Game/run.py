@@ -39,7 +39,7 @@ class button4x4:
             click.play()
             pygame.mixer.music.stop()
             time.sleep(1)
-            from Game4x4 import Game2048
+            from game.4x4 import Game2048
             game = Game2048()
             game.run_game()
     #Khi lướt qua nút thì nút sẽ đổi màu
@@ -65,7 +65,7 @@ class button6x6:
             click.play()
             pygame.mixer.music.stop()
             time.sleep(1)
-            from Game6x6 import Game2048
+            from game.6x6 import Game2048
             game = Game2048()
             game.run_game()
     #Khi lướt qua nút thì nút sẽ đổi màu
@@ -91,7 +91,7 @@ class button8x8:
             click.play()
             pygame.mixer.music.stop()
             time.sleep(1)
-            from Game8x8 import Game2048
+            from game.8x8 import Game2048
             game = Game2048()
             game.run_game()
     #Khi lướt qua nút thì nút sẽ đổi màu
